@@ -18,29 +18,43 @@
     </li>
 
     <li class="nav-item">
-      <a routerLink="/" class="nav-link">
-        <i class="menu-icon fa fa-tachometer-alt"></i>
+      <a
+        routerLink="/"
+        class="nav-link"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        <i class="menu-icon fa fa-tachometer-alt" style="color: #5983e8"></i>
         <span class="menu-title">Dashboard</span>
       </a>
     </li>
 
     <li class="nav-item">
-      <a routerLink="/ingreso-egreso" class="nav-link">
-        <i class="menu-icon fa fa-clipboard-list"></i>
+      <a
+        routerLink="/ingreso-egreso"
+        class="nav-link"
+        routerLinkActive="active"
+      >
+        <i class="menu-icon fa fa-clipboard-list" style="color: #5983e8"></i>
         <span class="menu-title">Ingresos y Egresos</span>
       </a>
     </li>
 
     <li class="nav-item">
-      <a routerLink="/detalle" class="nav-link">
-        <i class="menu-icon fa fa-table"></i>
+      <a
+        routerLink="/detalle"
+        class="nav-link"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        <i class="menu-icon fa fa-table" style="color: #5983e8"></i>
         <span class="menu-title">Detalle</span>
       </a>
     </li>
 
     <li class="nav-item">
-      <a routerLink="/login" class="nav-link cursor">
-        <i class="menu-icon fa fa-sign-out-alt"></i>
+      <a (click)="logout()" class="nav-link cursor">
+        <i class="menu-icon fa fa-sign-out-alt" style="color: #5983e8"></i>
         <span class="menu-title">Cerrar sesión</span>
       </a>
     </li>
