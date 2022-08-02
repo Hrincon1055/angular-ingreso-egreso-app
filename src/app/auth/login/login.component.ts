@@ -36,7 +36,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.cargandoUnSubscription.unsubscribe();
   }
-  public loginUsuario() {
+  public loginUsuario(): void {
     if (this.loginForm.invalid) return;
     this.store.dispatch(actionsUi.isLoading());
     // Swal.fire({

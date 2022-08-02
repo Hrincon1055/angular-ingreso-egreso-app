@@ -6,18 +6,27 @@ import { Store } from '@ngrx/store';
 import { AppState } from '../app.reducer';
 import * as actionsAuth from '../auth/auth.actions';
 import { map } from 'rxjs/operators';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
+import * as actionsIngreosEngreso from '../ingreso-egreso/ingreso-egreso.actions';
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   public userUnSubscriptio!: Subscription;
+  private _user!: Usuario | null;
   constructor(
     public auth: AngularFireAuth,
     private firestore: AngularFirestore,
     private store: Store<AppState>
   ) {}
-  public initAuthListener() {
+  get user(): {
+    uid?: string | undefined;
+    nombre?: string | undefined;
+    email?: string | undefined;
+  } {
+    return { ...this._user };
+  }
+  public initAuthListener(): void {
     this.auth.authState.subscribe((fbUser) => {
       if (fbUser) {
         this.userUnSubscriptio = this.firestore
@@ -25,18 +34,25 @@ export class AuthService {
           .valueChanges()
           .subscribe((firestoreUser) => {
             const user = Usuario.fromFirebase(firestoreUser);
+            this._user = user;
             this.store.dispatch(actionsAuth.setUser({ user: user }));
           });
       } else {
         if (this.userUnSubscriptio) {
           this.userUnSubscriptio.unsubscribe();
         }
+        this._user = null;
         this.store.dispatch(actionsAuth.unSetUser());
+        this.store.dispatch(actionsIngreosEngreso.unSetItems());
       }
     });
   }
 
-  public crearUsuario(nombre: string, correo: string, password: string) {
+  public crearUsuario(
+    nombre: string,
+    correo: string,
+    password: string
+  ): Promise<void> {
     return this.auth
       .createUserWithEmailAndPassword(correo, password)
       .then(({ user }) => {
@@ -47,10 +63,10 @@ export class AuthService {
   public loginUsuario(correo: string, password: string) {
     return this.auth.signInWithEmailAndPassword(correo, password);
   }
-  public logout() {
+  public logout(): Promise<void> {
     return this.auth.signOut();
   }
-  public isAuth() {
+  public isAuth(): Observable<boolean> {
     return this.auth.authState.pipe(map((fbUser) => fbUser != null));
   }
 }
