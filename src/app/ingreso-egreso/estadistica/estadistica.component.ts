@@ -4,6 +4,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from '../../app.reducer';
 import { IngresoEgreso } from '../../models/ingreso-egreso';
 import { Subscription } from 'rxjs';
+import { AppStateWithIngresoEgreso } from '../ingreso-egreso.reducer';
 @Component({
   selector: 'app-estadistica',
   templateUrl: './estadistica.component.html',
@@ -21,7 +22,7 @@ export class EstadisticaComponent implements OnInit, OnDestroy {
     labels: this.doughnutChartLabels,
     datasets: [{ data: [] }],
   };
-  constructor(private store: Store<AppState>) {}
+  constructor(private store: Store<AppStateWithIngresoEgreso>) {}
 
   ngOnInit(): void {
     this.ingresosEgresosUnSubscribe = this.store

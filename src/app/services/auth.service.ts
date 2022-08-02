@@ -38,10 +38,10 @@ export class AuthService {
             this.store.dispatch(actionsAuth.setUser({ user: user }));
           });
       } else {
+        this._user = null;
         if (this.userUnSubscriptio) {
           this.userUnSubscriptio.unsubscribe();
         }
-        this._user = null;
         this.store.dispatch(actionsAuth.unSetUser());
         this.store.dispatch(actionsIngreosEngreso.unSetItems());
       }
